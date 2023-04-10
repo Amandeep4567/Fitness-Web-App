@@ -5,6 +5,16 @@ import { exerciseOptions, fetchData } from "../utils/fetchData";
 
 const SearchExercises = () => {
   const [search, setSearch] = useState("");
+  const [exercises, setExercises] = useState([]);
+
+  useEffect(() => {
+    const fetchExercisesData = async () => {
+      const bodyPartsData = await fetchData(
+        "https://exercisedb.p.rapidapi.com/exercises/bodyPartList",
+        exerciseOptions
+      );
+    };
+  });
 
   const handleSearch = async () => {
     if (search) {
@@ -14,11 +24,16 @@ const SearchExercises = () => {
       );
       console.log(exerciseData);
 
-      const SearchExercises = exerciseData.filter(
+      const SearchedExercises = exerciseData.filter(
         (exercise) =>
-          exercise.class.toLowerCase().includes(search) ||
-          exercise.class.toLowerCase().includes(search)
+          exercise.name.toLowerCase().includes(search) ||
+          exercise.target.toLowerCase().includes(search) ||
+          exercise.equipment.toLowerCase().includes(search) ||
+          exercise.bodyPart.toLowerCase().includes(search)
       );
+
+      setSearch("");
+      setExercises(SearchedExercises);
     }
   };
 
